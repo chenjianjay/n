@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NIODIOR - KEWESEKI摩托车</title>
+  <script src="./tailwindcss.js"></script>
+  <style>
+    body { font-family: 'Microsoft YaHei', system-ui, sans-serif; }
+    .info-label { color: #374151; font-weight: 500; }
+    .info-value { color: #1f2937; font-weight: 600; }
+    
+    .sticky-tabs {
+      position: sticky;
+      top: 73px;
+      z-index: 40;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+    
+    .tab-active {
+      background-color: #1e40af;
+      color: white;
+      border-color: #1e40af;
+    }
+
+    /* 回到顶部按钮 - 白灰色方形样式 */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 52px;
+      height: 52px;
+      background-color: #f8f9fa;
+      color: #4b5563;
+      border: 2px solid #d1d5db;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 50;
+    }
+
+    #back-to-top.show {
+      opacity: 0.95;
+      visibility: visible;
+    }
+
+    #back-to-top:hover {
+      background-color: #4b5563;
+      color: white;
+      border-color: #4b5563;
+      transform: translateY(-3px);
+    }
+    img {
+      filter: contrast(110%) brightness(105%);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="index.html">
+        <img src="assets/logo.png" alt="NIODIOR" class="h-14">
+      </a>
+      <div class="flex gap-6 md:gap-8 text-gray-700 font-medium text-base">
+        <a href="index.html" class="hover:text-blue-600">Início</a>
+        <a href="keweseki.html" class="hover:text-blue-600">KEWESEKI</a>
+        <a href="jili.html" class="hover:text-blue-600">Geely</a>
+        <a href="subsidiary.html" class="hover:text-blue-600">Subsidiárias</a>
+        <a href="history.html" class="hover:text-blue-600">História</a>
+        <a href="culture.html" class="hover:text-blue-600">Cultura</a>
+        <a href="contact.html" class="hover:text-blue-600">Sobre nós</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 固定 Tab 切换栏 -->
+  <div class="sticky-tabs">
+    <div class="max-w-6xl mx-auto px-6 py-4">
+      <div class="flex justify-center">
+        <div class="inline-flex bg-gray-100 rounded-full p-1 shadow-inner">
+          <button onclick="filterCategory('all')" id="tab-all" class="tab-active px-8 py-3 rounded-full font-medium transition-all">Todos</button>
+          <button onclick="filterCategory('two')" id="tab-two" class="px-8 py-3 rounded-full font-medium transition-all">Motociclo de duas rodas</button>
+          <button onclick="filterCategory('three')" id="tab-three" class="px-8 py-3 rounded-full font-medium transition-all">Triciclo</button>
+          <button onclick="filterCategory('multi')" id="tab-multi" class="px-8 py-3 rounded-full font-medium transition-all">Moto multifuncional</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-bold text-center mb-8">Série de Motos KEWESEKI</h1>
+    
+    <div id="moto-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- 动态生成 -->
+    </div>
+  </div>
+
+  <!-- 回到顶部按钮（白灰色方形） -->
+  <div id="back-to-top" onclick="scrollToTop()">
+    ↑
+  </div>
+
+  <script>
+    // ==================== 摩托车数据（你的数据保持不变） ====================
+    const motos = [
+      {
+        id: 1,
+        category: "three",
+        name: "KW150-ZH",
+        image: "./assets/moto/KW150-ZH.jpg",
+        price: "1,600,000.00 AKZ",
+        iva: "224,000.00 AKZ",
+        total: "1,824,000.00 AKZ",
+        dimensions: "2900mm × 1250mm × 1160mm",
+        engine: "150CC Resfriamento do Vento"
+      },
+      {
+        id: 2,
+        category: "three",
+        name: "KW175-ZH-A",
+        image: "./assets/moto/KW175-ZH-A.jpg",
+        price: "1,700,000.00 AKZ",
+        iva: "238,000.00 AKZ",
+        total: "1,938,000.00 AKZ",
+        dimensions: "3200mm × 1260mm × 1120mm",
+        engine: "175CC Resfriamento do Vento"
+      },
+      {
+        id: 3,
+        category: "three",
+        name: "KW150-Simple",
+        image: "./assets/moto/KW150-Simple.jpg",
+        price: "1,500,000.00 AKZ",
+        iva: "210,000.00 AKZ",
+        total: "1,710,000.00 AKZ",
+        dimensions: "2900mm × 1250mm × 1160mm",
+        engine: "150CC Resfriamento do Vento"
+      },
+      {
+        id: 4,
+        category: "three",
+        name: "KW175-ZH-A",
+        image: "./assets/moto/KW175-ZH-A.jpg",
+        price: "1,700,000.00 AKZ",
+        iva: "238,000.00 AKZ",
+        total: "1,938,000.00 AKZ",
+        dimensions: "3200mm × 1260mm × 1120mm",
+        engine: "175CC Resfriamento do Vento"
+      },
+      {
+        id: 5,
+        category: "three",
+        name: "KW180-VIP",
+        image: "./assets/moto/KW180-VIP.jpg",
+        price: "1,780,000.00 AKZ",
+        iva: "249,200.00 AKZ",
+        total: "2,029,200.00 AKZ",
+        dimensions: "2900mm × 1250mm × 1160mm",
+        engine: "150CC Resfriamento do Vento"
+      },
+      {
+        id: 6,
+        category: "three",
+        name: "KW200-ZH-2(VIP)",
+        image: "./assets/moto/KW200-ZH-2(VIP).jpg",
+        price: "2,180,000.00 AKZ",
+        iva: "305,200.00 AKZ",
+        total: "2,4850,200.00 AKZ",
+        dimensions: "3500mm × 1300mm × 1500mm",
+        engine: "200CC Resfriamento do Vento"
+      },
+      {
+        id: 7,
+        category: "three",
+        name: "KW150-ZH-P(Modelo de Passageiros)",
+        image: "./assets/moto/KW150-ZH-P(Modelo de Passageiros).jpg",
+        price: "2,550,000.00 AKZ",
+        iva: "357,000.00 AKZ",
+        total: "2,907,000.00 AKZ",
+        dimensions: "3030mm × 1220mm × 1740mm",
+        passengers: "8",
+        engine: "150CC Resfriamento do Vento"
+      },
+      {
+        id: 8,
+        category: "multi",
+        name: "KW200-ZH-H(Modelo Saneamento Basico)",
+        image: "./assets/moto/KW200-ZH-H(Modelo Saneamento Basico).jpg",
+        price: "3,450,000.00 AKZ",
+        iva: "483,000.00 AKZ",
+        total: "3,933,000.00 AKZ",
+        dimensions: "3250mm × 1300mm × 1620mm",
+        engine: "200CC Da água de arrefecimento"
+      },
+      {
+        id: 9,
+        category: "multi",
+        name: "KW200ZH-S(Mini Cisterna de água)",
+        image: "./assets/moto/KW200ZH-S(Mini-Cisterna de água).jpg",
+        price: "3,450,000.00 AKZ",
+        iva: "483,000.00 AKZ",
+        total: "3,933,000.00 AKZ",
+        dimensions: "3290mm × 1400mm × 1510mm",
+        engine: "200CC Da água de arrefecimento"
+      },
+      {
+        id: 10,
+        category: "multi",
+        name: "KW300-ZH-H(Modelo Basculante)",
+        image: "./assets/moto/KW300-ZH-H(Modelo Basculante).jpg",
+        price: "3,750,000.00 AKZ",
+        iva: "525,000.00 AKZ",
+        total: "4,275,000.00 AKZ",
+        dimensions: "3500mm × 1300mm × 1500mm",
+        engine: "300CC Arrefecimento de água"
+      },
+      {
+        id: 11,
+        category: "three",
+        name: "KW300-ZH-Z",
+        image: "./assets/moto/KW300-ZH-Z.jpg",
+        price: "2,850,000.00 AKZ",
+        iva: "399,000.00 AKZ",
+        total: "3,249,000.00 AKZ",
+        dimensions: "3500mm × 1300mm × 1500mm",
+        w:"105KG",
+        passengers: "2(110KG)",
+        engine: "300CC Arrefecimento de água"
+      },
+      {
+        id: 12,
+        category: "three",
+        name: "KW200-ZH-A",
+        image: "./assets/moto/KW200-ZH-A.jpg",
+        price: "2,800,000.00 AKZ",
+        iva: "392,000.00 AKZ",
+        total: "3,192,000.00 AKZ",
+        dimensions: "3500mm × 1300mm × 1500mm",
+        engine: "200CC Arrefecimento de água"
+      },
+      {
+        id: 13,
+        category: "three",
+        name: "KW300-TR-5",
+        image: "./assets/moto/KW300-TR-5.jpg",
+        price: "4,000,000.00 AKZ",
+        iva: "560,000.00 AKZ",
+        total: "4,560,000.00 AKZ",
+        dimensions: "",
+        engine: ""
+      },
+      {
+        id: 14,
+        category: "three",
+        name: "KW300-Fazenda",
+        image: "./assets/moto/KW300-Fazenda.jpg",
+        price: "4,500,000.00 AKZ",
+        iva: "63,000.00 AKZ",
+        total: "5,130,000.00 AKZ",
+        dimensions: "3330mm × 1200mm × 1579mm",
+        engine: "300CC Arrefecimento de água"
+      },
+      {
+        id: 15,
+        category: "three",
+        name: "KW300-TR-9",
+        image: "./assets/moto/KW300-TR-9.jpg",
+        price: "",
+        iva: "",
+        total: "",
+        dimensions: "",
+        engine: ""
+      },
+      {
+        id: 16,
+        category: "three",
+        name: "KW200-ZH-Max",
+        image: "./assets/moto/KW200-ZH-Max.jpg",
+        price: "",
+        iva: "",
+        total: "",
+        dimensions: "",
+        engine: ""
+      },
+      {
+        id: 17,
+        category: "two",
+        name: "CM50-2F",
+        image: "./assets/moto/CM50-2F.jpg",
+        price: "690,000.00 AKZ",
+        iva: "96,000.00 AKZ",
+        total: "786,600.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "105KG",
+        passengers: "2(110KG)",
+        engine: "50CC Arrefecimento de água"
+      },
+      {
+        id: 18,
+        category: "two",
+        name: "KW50-2A",
+        image: "./assets/moto/KW50-2A.jpg",
+        price: "700,000.00 AKZ",
+        iva: "98,000.00 AKZ",
+        total: "798,000.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "105KG",
+        passengers: "2(110KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 19,
+        category: "two",
+        name: "KW50-PLUS",
+        image: "./assets/moto/KW50-PLUS.jpg",
+        price: "695,000.00 AKZ",
+        iva: "97,300.00 AKZ",
+        total: "792,300.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "105KG",
+        passengers: "2(110KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 20,
+        category: "two",
+        name: "KW50-MAX",
+        image: "./assets/moto/KW50-MAX.jpg",
+        price: "750,000.00 AKZ",
+        iva: "105,000.00 AKZ",
+        total: "855,000.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "105KG",
+        passengers: "2(110KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 21,
+        category: "two",
+        name: "KW50-Super",
+        image: "./assets/moto/KW50-Super.jpg",
+        price: "810,000.00 AKZ",
+        iva: "113,400.00 AKZ",
+        total: "923,400.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "105KG",
+        passengers: "2(110KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 22,
+        category: "two",
+        name: "KW50-Pro",
+        image: "./assets/moto/KW50-Pro.jpg",
+        price: "860,000.00 AKZ",
+        iva: "120,400.00 AKZ",
+        total: "980,400.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "117KG",
+        passengers: "2(150KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 23,
+        category: "two",
+        name: "KW50-B",
+        image: "./assets/moto/KW50-B.jpg",
+        price: "840,000.00 AKZ",
+        iva: "117,600.00 AKZ",
+        total: "957,600.00 AKZ",
+        dimensions: "1900mm × 750mm × 1060mm",
+        weight: "130KG",
+        passengers: "2(150KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 24,
+        category: "two",
+        name: "KW50-68A",
+        image: "./assets/moto/KW50-68A.jpg",
+        price: "",
+        iva: "",
+        total: "",
+        dimensions: "",
+        weight: "",
+        passengers: "",
+        engine: ""
+      },
+      {
+        id: 25,
+        category: "two",
+        name: "KW-GY",
+        image: "./assets/moto/KW-GY.jpg",
+        price: "730,000.00 AKZ",
+        iva: "102,200.00 AKZ",
+        total: "832,200.00 AKZ",
+        dimensions: "1850mm × 750mm × 1060mm",
+        weight: "117KG",
+        passengers: "2(150KG)",
+        engine: "50CC Resfriamento do Vento"
+      },
+      {
+        id: 26,
+        category: "two",
+        name: "KW200S",
+        image: "./assets/moto/KW200S.jpg",
+        price: "1.450,000.00 AKZ",
+        iva: "203,000.00 AKZ",
+        total: "1.653,000.00 AKZ",
+        dimensions: "1985mm × 830mm × 1080mm",
+        weight: "125KG",
+        passengers: "2(150KG)",
+        engine: "200CC Resfriamento do Vento"
+      }
+    ];
+
+    let currentCategory = 'all';
+
+    function renderMotos(category = 'all') {
+      const container = document.getElementById('moto-container');
+      container.innerHTML = '';
+
+      const filteredMotos = category === 'all' 
+        ? motos 
+        : motos.filter(m => m.category === category);
+
+      filteredMotos.forEach(moto => {
+        const cardHTML = `
+          <div class="bg-white rounded-3xl shadow overflow-hidden">
+            <img src="${moto.image}" class="w-full h-64 object-cover">
+            
+            <div class="p-8 space-y-4">
+              <h3 class="text-2xl font-bold">${moto.name}</h3>
+              
+              <div class="space-y-3 text-sm">
+                <div class="flex justify-between">
+                  <span class="info-label">Preço do veículo:</span>
+                  <span class="info-value">${moto.price || '—'}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="info-label">IVA 14%:</span>
+                  <span class="info-value">${moto.iva || '—'}</span>
+                </div>
+                <div class="flex justify-between border-t pt-3">
+                  <span class="info-label font-semibold">Valor Total:</span>
+                  <span class="info-value text-blue-600 text-lg">${moto.total || '—'}</span>
+                </div>
+                
+                <div class="pt-4">
+                  <p class="info-label">Dimensões (C×L×A):</p>
+                  <p class="info-value">${moto.dimensions || '—'}</p>
+                </div>
+                
+                ${moto.weight ? `
+                <div>
+                  <p class="info-label">Peso (W):</p>
+                  <p class="info-value">${moto.weight}</p>
+                </div>` : ''}
+                
+                <div>
+                  <p class="info-label">Tipo de motor:</p>
+                  <p class="info-value">${moto.engine || '—'}</p>
+                </div>
+                
+                ${moto.passengers ? `
+                <div>
+                  <p class="info-label">Número de passageiros:</p>
+                  <p class="info-value text-green-600">${moto.passengers}</p>
+                </div>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      });
+    }
+
+    function filterCategory(category) {
+      currentCategory = category;
+      
+      document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+        btn.classList.remove('tab-active');
+        if (btn.id === `tab-${category}`) btn.classList.add('tab-active');
+      });
+      
+      renderMotos(category);
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function toggleBackToTop() {
+      const btn = document.getElementById('back-to-top');
+      if (window.scrollY > 400) {
+        btn.classList.add('show');
+      } else {
+        btn.classList.remove('show');
+      }
+    }
+
+    window.onload = () => {
+      renderMotos('all');
+      window.addEventListener('scroll', toggleBackToTop);
+    };
+  </script>
+
+</body>
+</html>

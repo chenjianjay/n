@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NIODIOR</title>
+  <script src="./tailwindcss.js"></script>
+  <style>
+    body { 
+      font-family: 'Microsoft YaHei', system-ui, sans-serif; 
+    }
+    
+    .hero {
+      height: 60vh;
+      min-height: 520px;
+      background-size: contain;     /* 宽度全部显示 */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #0f172a;    /* 深色背景兜底 */
+    }
+
+    .slogan {
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .quick-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .quick-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="index.html">
+        <img src="assets/logo.png" alt="NIODIOR" class="h-14">
+      </a>
+      <div class="flex gap-6 md:gap-8 text-gray-700 font-medium text-base">
+        <a href="index.html" class="hover:text-blue-600">Início</a>
+        <a href="keweseki.html" class="hover:text-blue-600">KEWESEKI</a>
+        <a href="jili.html" class="hover:text-blue-600">Geely</a>
+        <a href="subsidiary.html" class="hover:text-blue-600">Subsidiárias</a>
+        <a href="history.html" class="hover:text-blue-600">História</a>
+        <a href="culture.html" class="hover:text-blue-600">Cultura</a>
+        <a href="contact.html" class="hover:text-blue-600">Sobre nós</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero 大图 - 高度自适应 + 宽度全部显示 -->
+  <div class="hero bg-cover flex items-center justify-center text-white relative"
+       style="background-image: url('./assets/home/intro4.JPG')">
+    <div class="text-center z-10 px-6 max-w-4xl">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">Bem-vindo(a) à NIODIOR</h1>
+      <p class="slogan text-2xl md:text-3xl font-medium tracking-wide">
+        Profissionalismo · Qualidade · Serviço
+      </p>
+    </div>
+  </div>
+
+  <!-- 集团简介 -->
+  <div class="max-w-6xl mx-auto px-6 py-20 bg-white">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <h2 class="text-4xl font-bold mb-8 text-slate-800">Perfil do Grupo</h2>
+        <div class="space-y-6 text-lg text-gray-600 leading-relaxed">
+          <p>
+            NIODIOR O Grupo INTERNACIONAL é um conglomerado internacional diversificado com as suas principais atividades localizadas em Angola.
+          </p>
+          <p>
+            Fundado em Angola em 2003, o grupo expandiu-se ao longo de quase 20 anos, passando do seu foco inicial no comércio internacional de motociclos para incluir a venda de automóveis, o comércio agrícola e alimentar, o fabrico de motociclos, o investimento financeiro, o equipamento médico e a pesca em alto mar, entre outros sectores.
+          </p>
+          <p>
+            O grupo já concluiu a construção da sua sede própria em Viana, Luanda, com uma área superior a 20.000 metros quadrados.
+          </p>
+        </div>
+      </div>
+      <div>
+        <img src="./assets/home/intro3.JPG" 
+             class="w-full rounded-3xl shadow-2xl" alt="Grupo NIODIOR">
+      </div>
+    </div>
+  </div>
+
+  <!-- 快速入口 - 优化高级感 -->
+  <div class="max-w-6xl mx-auto px-6 pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <a href="keweseki.html" class="group quick-card">
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden h-full flex flex-col">
+          <div class="h-2 bg-gradient-to-r from-blue-600 to-cyan-100"></div>
+          <div class="p-10 flex-1 flex flex-col justify-center text-center">
+            <h3 class="text-2xl font-semibold mb-4 group-hover:text-blue-600 transition-colors">KEWESEKI Motociclos</h3>
+            <p class="text-gray-600 text-[15px] leading-relaxed">Descubra a nossa gama completa de motociclos de alta qualidade</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="jili.html" class="group quick-card">
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden h-full flex flex-col">
+          <div class="h-2 bg-gradient-to-r from-blue-600 to-cyan-100"></div>
+          <div class="p-10 flex-1 flex flex-col justify-center text-center">
+            <h3 class="text-2xl font-semibold mb-4 group-hover:text-blue-600 transition-colors">Automóveis Geely</h3>
+            <p class="text-gray-600 text-[15px] leading-relaxed">Veículos modernos, confortáveis e confiáveis</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="history.html" class="group quick-card">
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden h-full flex flex-col">
+          <div class="h-2 bg-gradient-to-r from-blue-600 to-cyan-100"></div>
+          <div class="p-10 flex-1 flex flex-col justify-center text-center">
+            <h3 class="text-2xl font-semibold mb-4 group-hover:text-blue-600 transition-colors">História do Grupo</h3>
+            <p class="text-gray-600 text-[15px] leading-relaxed">Mais de 20 anos de desenvolvimento e conquistas</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
